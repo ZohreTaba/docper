@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+    db:
+        restart: always
+        image: postgres:latest
+        environment:
+            - POSTGRES_USERNAME=postgres
+            - POSTGRES_PASSWORD=postgrespw
+            - POSTGRES_HOSTNAME=db
+            - POSTGRES_DB=postgres
+        ports:
+        - "5432:5432"
+        volumes:
+            - db:/var/lib/postgresql/data
+    docper:
+        container_name: docper-api
+        build:
+            context: ./
+        image: docper-api
+        environment:
+        - POSTGRES_USERNAME=postgres
+        - POSTGRES_PASSWORD=postgrespw
+        - POSTGRES_HOSTNAME=db
+        - POSTGRES_PORTNAME= 5432
+        - POSTGRES_DB=postgres
+        links:
+            - db
+        volumes:
+            - './:/src'
+        ports:
+        - "5000:5000"
+        depends_on:
+            - db
+volumes:
+    db:
+        driver: local

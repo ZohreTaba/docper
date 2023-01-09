@@ -6,17 +6,17 @@ from src.routers import document, permission, member
 
 
 def create_app():
-    app = FastAPI(docs_url="/", title=settings.APP_NAME, version=settings.APP_VERSION)
+    app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
 
     register_tortoise(
         app,
         db_url=get_db_uri(
-            user=settings.POSTGRESQL_USERNAME,
-            passwd=settings.POSTGRESQL_PASSWORD,
-            host=settings.POSTGRESQL_HOSTNAME,
-            db=settings.POSTGRESQL_DATABASE
+            user=settings.POSTGRES_USERNAME,
+            passwd=settings.POSTGRES_PASSWORD,
+            host=settings.POSTGRES_HOSTNAME,
+            db=settings.POSTGRES_DATABASE
         ),
-        modules={"models": ["src.models.document", "src.models.member", "src.models.permission"]},
+        modules={"models": ["src.models"]},
         generate_schemas=True,
         add_exception_handlers=True,
     )
@@ -26,7 +26,7 @@ def create_app():
 
 
 def get_db_uri(user, passwd, host, db):
-    return f"postgres://{user}:{passwd}@{host}:5432/{db}"
+    return f"postgres://{user}:{passwd}@{host}:49154/{db}"
 
 
 def register_router(app: FastAPI):

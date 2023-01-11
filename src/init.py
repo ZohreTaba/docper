@@ -16,7 +16,7 @@ def create_app():
             host=settings.POSTGRES_HOSTNAME,
             db=settings.POSTGRES_DATABASE
         ),
-        modules={"models": ["src.models"]},
+        modules={"models": ["src.models.document", "src.models.member", "src.models.permission"]},
         generate_schemas=True,
         add_exception_handlers=True,
     )
@@ -26,7 +26,7 @@ def create_app():
 
 
 def get_db_uri(user, passwd, host, db):
-    return f"postgres://{user}:{passwd}@{host}:49154/{db}"
+    return f"postgres://{user}:{passwd}@{host}:5432/{db}"
 
 
 def register_router(app: FastAPI):

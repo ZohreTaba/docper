@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     POSTGRES_HOSTNAME: str = "localhost"
     POSTGRES_DATABASE: str = "postgres"
     POSTGRES_USERNAME: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgrespw"
+    POSTGRES_PASSWORD: str = "postgres"
 
 
 settings = Settings()

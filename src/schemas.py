@@ -10,10 +10,5 @@ class CoreModel(BaseModel):
     pass
 
 
-class DateTimeModelMixin(BaseModel):
-    created_at: Optional[datetime]
-    modified_at: Optional[datetime]
-
-
-class IDModelMixin(BaseModel):
-    id: int
+class Status(BaseModel):
+    message: str

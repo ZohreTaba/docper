@@ -11,7 +11,8 @@ class Member(Model):
     created_at = fields.DatetimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["user_name"]
+        table: str = 'documents_entity'
+        ordering = ["id"]
 
 
 MemberPydantic = pydantic_model_creator(Member, name="MemberPy")

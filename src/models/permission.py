@@ -3,9 +3,6 @@ from tortoise import fields
 from tortoise.models import Model
 from tortoise.contrib.pydantic import pydantic_model_creator
 
-class Zohre(Model):
-    pass
-
 
 class CategoryPermission(Model):
     category = fields.ForeignKeyField('models.Category', related_name='category_permission')

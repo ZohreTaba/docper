@@ -7,7 +7,7 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 class Member(Model):
 
     id = fields.IntField(pk=True, index=True)
-    user_name = fields.CharField(max_length=230, null=False, unique=True)
+    user_name = fields.CharField(max_length=255, null=False, unique=True)
     created_at = fields.DatetimeField(auto_now_add=True)
 
     class Meta:

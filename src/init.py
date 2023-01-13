@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
 from src.settings import settings
-from src.routers import document, permission, member
+from src.routers import document, permission, member, author, category
 
 
 def create_app():
@@ -32,4 +32,6 @@ def get_db_uri(user, passwd, host, db):
 def register_router(app: FastAPI):
     app.include_router(member.router, prefix="/member", tags=["Member"])
     app.include_router(document.router, prefix="/document", tags=["Document"])
+    app.include_router(category.router, prefix="/category", tags=["Category"])
+    app.include_router(author.router, prefix="/author", tags=["Author"])
     app.include_router(permission.router, prefix="/permission", tags=["Permission"])

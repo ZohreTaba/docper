@@ -33,6 +33,7 @@ class Document(Model):
 
 
 DocumentPydantic = pydantic_model_creator(Document, name="DocumentPy")
+DocumentUpdatePydantic = pydantic_model_creator(Document, name="DocumentUpdatePydantic", exclude=("created_at", "id"))
 DocumentInPydantic = pydantic_model_creator(Document, name="DocumentPyIn", exclude_readonly=True)
 
 CategoryPydantic = pydantic_model_creator(Category, name="CategoryPy")

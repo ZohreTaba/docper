@@ -13,9 +13,9 @@ router = APIRouter()
 @router.get("/",
             description="Fake methode for authorize member",
             include_in_schema=False)
-async def validate_current_user(user_agent: str | None = Header(default=None)):
-    if not settings.DEFAULT_USER == user_agent:
-        raise HTTPException(status_code=404, detail=f"Member {user_agent} not access to change")
+async def check_if_user_is_admin(user_admin: str | None = Header(default=None)):
+    if not settings.DEFAULT_USER == user_admin:
+        raise HTTPException(status_code=404, detail=f"Member {user_admin} not access to change")
 
 
 @router.get("/members",
@@ -44,7 +44,7 @@ async def get_member_by_name(user_name: str):
 @router.post("/create",
              description="Registers the member",
              response_model=MemberPydantic,
-             dependencies=[Depends(validate_current_user)])
+             dependencies=[Depends(check_if_user_is_admin)])
 async def create_member(member: MemberInPydantic):
     member_obj = await Member.create(**member.dict(exclude_unset=True))
     return await MemberPydantic.from_tortoise_orm(member_obj)
@@ -53,6 +53,7 @@ async def create_member(member: MemberInPydantic):
 @router.put("/update/{user_id}",
             description="Updates the member",
             response_model=MemberPydantic,
+            dependencies=[Depends(check_if_user_is_admin)],
             responses={404: {"model": HTTPNotFoundError}})
 async def update_member(user_id: int, member: MemberInPydantic):
     await Member.filter(id=user_id).update(**member.dict(exclude_unset=True))
@@ -62,6 +63,7 @@ async def update_member(user_id: int, member: MemberInPydantic):
 @router.delete("/delete/{user_id}",
                description="Deletes the member",
                response_model=Status,
+               dependencies=[Depends(check_if_user_is_admin)],
                responses={404: {"model": HTTPNotFoundError}})
 async def delete_member(user_id: int):
     deleted_count = await Member.filter(id=user_id).delete()

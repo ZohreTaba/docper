@@ -1,15 +1,19 @@
 
 from tortoise import fields
 from tortoise.models import Model
-
 from tortoise.contrib.pydantic import pydantic_model_creator
+
+# from src.models.permission import CategoryPermission, DocumentPermission
 
 
 class Category(Model):
     id = fields.IntField(pk=True, index=True)
     name = fields.CharField(max_length=255, unique=True, null=False)
-    documents: fields.ReverseRelation["Document"]
     created_at = fields.DatetimeField(auto_now_add=True)
+
+    documents: fields.ReverseRelation["Document"]
+    # category_permissions: fields.ReverseRelation["CategoryPermission"]
+    # document_permissions: fields.ReverseRelation["DocumentPermission"]
 
 
 class Author(Model):

@@ -20,5 +20,4 @@ class Member(Model):
         ordering = ["id"]
 
 
-MemberPydantic = pydantic_model_creator(Member, name="MemberPy")
-MemberInPydantic = pydantic_model_creator(Member, name="MemberPyIn", exclude_readonly=True)
+

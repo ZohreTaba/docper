@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter, Header, HTTPException, Depends
 
-from src.models.permission import *
+from src.models.schemas import *
 from src.settings import *
 
 router = APIRouter()
@@ -19,7 +19,9 @@ async def check_if_user_is_admin(user_admin: str | None = Header(default=None)):
              description="Sets document permission",
              response_model=DocumentPermissionPydantic,
              dependencies=[Depends(check_if_user_is_admin)])
-async def set_permission_on_document(document_per: DocumentPermissionInPydantic, document_id: int, member_id: int):
+async def set_permission_on_document(document_per: DocumentPermissionInPydantic,
+                                     document_id: int,
+                                     member_id: int):
     document_obj = await DocumentPermission.create(**document_per.dict(exclude_unset=True),
                                                    document_id=document_id,
                                                    member_id=member_id)
@@ -30,8 +32,10 @@ async def set_permission_on_document(document_per: DocumentPermissionInPydantic,
              description="Sets category permission",
              response_model=CategoryPermissionPydantic,
              dependencies=[Depends(check_if_user_is_admin)])
-async def set_permission_on_category(category_per: CategoryPermissionInPydantic, category_id: int, member_id: int):
-    document_obj = await CategoryPermission.create(**category_per.dict(exclude_unset=True),
+async def set_permission_on_category(category_per: CategoryPermissionInPydantic,
+                                     category_id: int,
+                                     member_id: int):
+    category_obj = await CategoryPermission.create(**category_per.dict(exclude_unset=True),
                                                    category_id=category_id,
                                                    member_id=member_id)
-    return await CategoryPermissionPydantic.from_tortoise_orm(document_obj)
+    return await CategoryPermissionPydantic.from_tortoise_orm(category_obj)

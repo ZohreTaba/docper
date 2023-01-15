@@ -27,10 +27,3 @@ class DocumentPermission(Model):
     can_update = fields.BooleanField()
     can_delete = fields.BooleanField()
 
-
-CategoryPermissionPydantic = pydantic_model_creator(CategoryPermission, name="CategoryPerPy")
-CategoryPermissionInPydantic = pydantic_model_creator(CategoryPermission, name="CategoryPerPyIn", exclude_readonly=True)
-
-DocumentPermissionPydantic = pydantic_model_creator(DocumentPermission, name="CategoryDocPy")
-DocumentPermissionInPydantic = pydantic_model_creator(DocumentPermission, name="CategoryDocPyIn", exclude_readonly=True)
-

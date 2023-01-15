@@ -2,7 +2,7 @@ from typing import List
 
 from src.models.document import *
 from src.settings import settings
-from src.schemas import Status
+from src.models.schemas import *
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from tortoise.contrib.fastapi import HTTPNotFoundError
@@ -21,8 +21,8 @@ async def check_if_user_is_admin(user_admin: str | None = Header(default=None)):
 @router.get("/documents",
             description="Gets all documents",
             response_model=List[DocumentPydantic])
-async def get_all():
-    return await DocumentPydantic.from_queryset(Document.all().prefetch_related("category"))
+async def get_all(current_user: str | None = Header(default=None)):
+    return await DocumentPydantic.from_queryset(Document.all())
 
 
 @router.post("/create",

@@ -1,7 +1,6 @@
 
 from tortoise import fields
 from tortoise.models import Model
-from tortoise.contrib.pydantic import pydantic_model_creator
 
 # from src.models.permission import CategoryPermission, DocumentPermission
 
@@ -36,12 +35,3 @@ class Document(Model):
         'models.Author', related_name='author')
 
 
-DocumentPydantic = pydantic_model_creator(Document, name="DocumentPy")
-DocumentUpdatePydantic = pydantic_model_creator(Document, name="DocumentUpdatePydantic", exclude=("created_at", "id"))
-DocumentInPydantic = pydantic_model_creator(Document, name="DocumentPyIn", exclude_readonly=True)
-
-CategoryPydantic = pydantic_model_creator(Category, name="CategoryPy")
-CategoryInPydantic = pydantic_model_creator(Category, name="CategoryPyIn", exclude_readonly=True)
-
-AuthorPydantic = pydantic_model_creator(Author, name="AuthorPy")
-AuthorInPydantic = pydantic_model_creator(Author, name="AuthorPyIn", exclude_readonly=True)

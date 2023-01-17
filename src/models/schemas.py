@@ -2,21 +2,36 @@
 
 from pydantic import BaseModel
 from tortoise.contrib.pydantic import pydantic_queryset_creator, pydantic_model_creator
-from src.models.document import *
-from src.models.member import *
-from src.models.permission import *
+from models.document import *
+from models.member import *
+from models.permission import *
+from tortoise import Tortoise
 
 
-#
-# Tortoise.init_models(["src.models.document", "src.models.member", "src.models.permission"],
+# Tortoise.init_models(["models.document", "models.member", "models.permission"],
 #                      'models')
 
 
-class CoreModel(BaseModel):
-    """
-    Any common logic to be shared by all models goes here
-    """
-    pass
+
+class CategoryPyResult(BaseModel):
+    id: int
+    name: str
+
+
+class AuthorPyResult(BaseModel):
+    id: int
+    name: str
+
+
+class DocumentPyResult (BaseModel):
+
+    can_create: bool
+    can_read: bool
+    can_update: bool
+    can_delete: bool
+    id: int
+    category: CategoryPyResult
+    author: AuthorPyResult
 
 
 class Status(BaseModel):
@@ -46,23 +61,3 @@ DocumentPermissionInPydantic = pydantic_model_creator(DocumentPermission, name="
                                                       exclude_readonly=True,
                                                       exclude=("member_id", "document_id"))
 
-
-class CategoryPyResult(BaseModel):
-    id: int
-    name: str
-
-
-class AuthorPyResult(BaseModel):
-    id: int
-    name: str
-
-
-class DocumentPyResult (BaseModel):
-
-    can_create: bool
-    can_read: bool
-    can_update: bool
-    can_delete: bool
-    id: int
-    category: CategoryPyResult
-    author: AuthorPyResult

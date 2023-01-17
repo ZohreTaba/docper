@@ -1,8 +1,7 @@
-from typing import List
 
-from src.models.document import *
-from src.settings import settings
-from src.models.schemas import *
+from typing import List
+from settings import settings
+from models.schemas import *
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from tortoise.contrib.fastapi import HTTPNotFoundError

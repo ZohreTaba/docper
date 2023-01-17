@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
-from src.settings import settings
-from src.routers import member, category, author, document, permission
+from settings import settings
+from routers import member, category, author, document, permission
 
 
 def create_app():
@@ -14,9 +14,10 @@ def create_app():
             user=settings.POSTGRES_USERNAME,
             passwd=settings.POSTGRES_PASSWORD,
             host=settings.POSTGRES_HOSTNAME,
-            db=settings.POSTGRES_DATABASE
+            db=settings.POSTGRES_DATABASE,
+            port=settings.POSTGRES_PORT
         ),
-        modules={"models": ["src.models.document", "src.models.member", "src.models.permission"]},
+        modules={"models": ["models.document", "models.member", "models.permission"]},
         generate_schemas=True,
         add_exception_handlers=True,
     )
@@ -25,8 +26,8 @@ def create_app():
     return app
 
 
-def get_db_uri(user, passwd, host, db):
-    return f"postgres://{user}:{passwd}@{host}:5432/{db}"
+def get_db_uri(user, passwd, host, db, port):
+    return f"postgres://{user}:{passwd}@{host}:{port}/{db}"
 
 
 def register_router(app: FastAPI):

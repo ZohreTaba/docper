@@ -3,7 +3,7 @@ from tortoise import fields
 from tortoise.models import Model
 from tortoise.contrib.pydantic import pydantic_model_creator
 
-from src.models.permission import CategoryPermission, DocumentPermission
+from models.permission import CategoryPermission, DocumentPermission
 
 
 class Member(Model):
@@ -16,7 +16,6 @@ class Member(Model):
     document_permissions: fields.ReverseRelation["DocumentPermission"]
 
     class Meta:
-        table: str = 'documents_entity'
         ordering = ["id"]
 
 

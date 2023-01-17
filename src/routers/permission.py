@@ -1,8 +1,8 @@
 
 from fastapi import APIRouter, Header, HTTPException, Depends
 
-from src.models.schemas import *
-from src.settings import *
+from models.schemas import *
+from settings import *
 
 router = APIRouter()
 

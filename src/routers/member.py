@@ -1,7 +1,7 @@
-from typing import List
 
-from src.settings import settings
-from src.models.schemas import *
+from typing import List
+from settings import settings
+from models.schemas import *
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from tortoise.contrib.fastapi import HTTPNotFoundError
@@ -22,22 +22,6 @@ async def check_if_user_is_admin(user_admin: str | None = Header(default=None)):
             response_model=List[MemberPydantic])
 async def get_all():
     return await MemberPydantic.from_queryset(Member.all())
-
-
-@router.get("/{user_id}",
-            description="Gets the member with user ID",
-            response_model=MemberPydantic,
-            responses={404: {"model": HTTPNotFoundError}})
-async def get_member_by_id(user_id: int):
-    return await MemberPydantic.from_queryset_single(Member.get(id=user_id))
-
-
-@router.get("/{user_name}",
-            description="Gets the member with user name",
-            response_model=MemberPydantic,
-            responses={404: {"model": HTTPNotFoundError}})
-async def get_member_by_name(user_name: str):
-    return await MemberPydantic.from_queryset_single(Member.get(user_name=user_name))
 
 
 @router.post("/create",

@@ -14,7 +14,6 @@ class Category(Model):
     # category_permissions: fields.ReverseRelation["CategoryPermission"]
 
 
-
 class Author(Model):
     id = fields.IntField(pk=True, index=True)
     name = fields.CharField(max_length=255, null=False, unique=True)

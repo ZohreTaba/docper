@@ -20,9 +20,47 @@ async def check_if_user_is_admin(user_admin: str | None = Header(default=None)):
 
 @router.get("/documents",
             description="Gets all documents",
-            response_model=List[DocumentPydantic])
+            response_model=List[DocumentPyResult])
 async def get_all(current_user: str | None = Header(default=None)):
-    return await DocumentPydantic.from_queryset(Document.all())
+    user_access_document_list = await Document.filter(
+        document_permissions__member__user_name=current_user).prefetch_related("category")
+
+    user_access_document_by_category_list = await Document.filter(
+        category__category_permissions__member__user_name=current_user).prefetch_related("category")
+
+    all_documents = await Document.all().prefetch_related("category", "author")
+
+    results = []
+    for item in all_documents:
+        result = DocumentPyResult(can_create=False,
+                                  can_read=False,
+                                  can_update=False,
+                                  can_delete=False,
+                                  id=item.id,
+                                  category=CategoryPyResult(id=item.category.id,
+                                                            name=item.category.name),
+                                  author=AuthorPyResult(id=item.author.id,
+                                                        name=item.author.name))
+
+        for cat in user_access_document_by_category_list:
+            if item.id == cat.id and item.category.id == cat.category.id:
+                per = await get_permission_on_category(cat.category.id, current_user)
+                result.can_create = per.can_creat
+                result.can_read = per.can_read
+                result.can_update = per.can_update
+                result.can_delete = per.can_delete
+
+        for doc in user_access_document_list:
+            if item.id == doc.id and item.category.id == doc.category.id:
+                per = await get_permission_on_document(item.id, current_user)
+                result.can_create = per.can_creat
+                result.can_read = per.can_read
+                result.can_update = per.can_update
+                result.can_delete = per.can_delete
+
+        results.append(result)
+
+    return results
 
 
 @router.post("/create",
@@ -57,3 +95,11 @@ async def delete_document(document_id: int):
     if not deleted_count:
         raise HTTPException(status_code=404, detail=f"Document {document_id} not found")
     return Status(message=f"Deleted document {document_id}")
+
+
+async def get_permission_on_document(doc, user_name):
+    return await DocumentPermission.filter(document_id=doc, member__user_name=user_name).first()
+
+
+async def get_permission_on_category(cat, user_name):
+    return await CategoryPermission.filter(category_id=cat, member__user_name=user_name).first()

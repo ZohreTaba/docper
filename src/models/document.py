@@ -12,7 +12,7 @@ class Category(Model):
 
     documents: fields.ReverseRelation["Document"]
     # category_permissions: fields.ReverseRelation["CategoryPermission"]
-    # document_permissions: fields.ReverseRelation["DocumentPermission"]
+
 
 
 class Author(Model):
@@ -33,5 +33,7 @@ class Document(Model):
         "models.Category", related_name="category")
     author: fields.ForeignKeyRelation[Author] = fields.ForeignKeyField(
         'models.Author', related_name='author')
+
+    # document_permissions: fields.ReverseRelation["DocumentPermission"]
 
 

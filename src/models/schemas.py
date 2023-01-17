@@ -1,14 +1,15 @@
 
-from tortoise import Tortoise
-from pydantic import BaseModel
 
+from pydantic import BaseModel
+from tortoise.contrib.pydantic import pydantic_queryset_creator, pydantic_model_creator
 from src.models.document import *
 from src.models.member import *
 from src.models.permission import *
 
 
-Tortoise.init_models(["src.models.document", "src.models.member", "src.models.permission"],
-                     'models')
+#
+# Tortoise.init_models(["src.models.document", "src.models.member", "src.models.permission"],
+#                      'models')
 
 
 class CoreModel(BaseModel):
@@ -44,3 +45,24 @@ DocumentPermissionPydantic = pydantic_model_creator(DocumentPermission, name="Ca
 DocumentPermissionInPydantic = pydantic_model_creator(DocumentPermission, name="CategoryDocPyIn",
                                                       exclude_readonly=True,
                                                       exclude=("member_id", "document_id"))
+
+
+class CategoryPyResult(BaseModel):
+    id: int
+    name: str
+
+
+class AuthorPyResult(BaseModel):
+    id: int
+    name: str
+
+
+class DocumentPyResult (BaseModel):
+
+    can_create: bool
+    can_read: bool
+    can_update: bool
+    can_delete: bool
+    id: int
+    category: CategoryPyResult
+    author: AuthorPyResult
